@@ -10,16 +10,20 @@
 	<select id="findByID" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select id,age,city_name from city where id = #{id,jdbcType=BIGINT}
 	</select>
+	<select id="findAll" resultMap="BaseResultMap" >
+		select id,age,city_name from city
+	</select>
 
-	<insert id="insert" parameterType="map" useGeneratedKeys="true" keyProperty="userID">
+
+	<insert id="insert" parameterType="com.xcloud.demo.domain.City" useGeneratedKeys="true" keyProperty="userID">
 		insert into city (
 		id,
 		age,
 		city_name)
 		values (
-		#{city.id,jdbcType=BIGINT},
-		#{city.age,jdbcType=INTEGER},
-		#{city.name,jdbcType=VARCHAR}
+		#{id,jdbcType=BIGINT},
+		#{age,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR}
 		)
 	</insert>
 

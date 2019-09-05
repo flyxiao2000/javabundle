@@ -29,9 +29,9 @@ public class DemoController {
 
     public DemoController() {
         LOG.info("construct DemoController");
-        cityList.add(new City(1L, 20, "shanghai"));
-        cityList.add(new City(2L, 22, "beijing"));
-        cityList.add(new City(3L, 22, "nanjing"));
+      //  cityList.add(new City(1L, 20, "shanghai"));
+       // cityList.add(new City(2L, 22, "beijing"));
+       // cityList.add(new City(3L, 22, "nanjing"));
 
         for (City c : cityList) {
             cityMap.put(c.getId(), c);
@@ -58,7 +58,7 @@ public class DemoController {
             }
             return cityList;
         }
-        return new ArrayList<>(cityMap.values());
+        return cityService.findAll();
     }
 
     @RequestMapping(value = "/cities/{id}", method = RequestMethod.GET)
@@ -70,7 +70,7 @@ public class DemoController {
     public CommonResp postCity(@RequestBody City city) {
         cityMap.put(city.getId(), city);
         int a = cityService.insert(city);
-        LOG.info("ccccc {} {}",a,a);
+        LOG.info("ccccc {} {}",a,city.getUserID());
         return new CommonResp(a, "success");
     }
 
