@@ -7,8 +7,11 @@ import java.util.HashMap;
 
 import com.xcloud.demo.domain.CommonResp;
 import com.xcloud.demo.domain.Section;
+import com.xcloud.demo.service.CityService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.xcloud.demo.domain.City;
@@ -19,6 +22,9 @@ public class DemoController {
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
     private ArrayList<City> cityList = new ArrayList<>();
     private Map<Long, City> cityMap = new HashMap<>();
+
+    @Autowired
+    private CityService cityService;
 
     public DemoController() {
         LOG.info("construct DemoController");
@@ -45,12 +51,17 @@ public class DemoController {
     }
 
     @RequestMapping(value = "/cities", method = RequestMethod.GET)
-    public List<City> getCityList() {
+    public List<City> getCityList(@RequestParam(value="id",required = false,defaultValue = "0") Long id) {
+        if( id ==0L){
+            ArrayList<City> cityList = new ArrayList<>();
+            cityList.add(cityService.findCityByID(id));
+            return cityList;
+        }
         return new ArrayList<>(cityMap.values());
     }
 
     @RequestMapping(value = "/cities/{id}", method = RequestMethod.GET)
-    public City getCityList(@PathVariable Long id) {
+    public City getCity(@PathVariable Long id) {
         return cityMap.get(id);
     }
 
