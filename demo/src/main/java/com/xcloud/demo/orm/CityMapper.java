@@ -6,4 +6,5 @@ import com.xcloud.demo.domain.City;
 
 public interface CityMapper {
     City findByID(@Param("id") Long id);
+    int insert(@Param("city") City record);
 }

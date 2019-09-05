@@ -9,6 +9,7 @@ import com.xcloud.demo.domain.CommonResp;
 import com.xcloud.demo.domain.Section;
 import com.xcloud.demo.service.CityService;
 
+import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,9 @@ public class DemoController {
 
     public DemoController() {
         LOG.info("construct DemoController");
-        cityList.add(new City(1L, 20, "shanghai",
-                new Section(1L, "232")));
-        cityList.add(new City(2L, 22, "beijing",
-                new Section(1L, "232")));
-        cityList.add(new City(3L, 22, "nanjing",
-                new Section(1L, "232")));
+        cityList.add(new City(1L, 20, "shanghai"));
+        cityList.add(new City(2L, 22, "beijing"));
+        cityList.add(new City(3L, 22, "nanjing"));
 
         for (City c : cityList) {
             cityMap.put(c.getId(), c);
@@ -51,10 +49,13 @@ public class DemoController {
     }
 
     @RequestMapping(value = "/cities", method = RequestMethod.GET)
-    public List<City> getCityList(@RequestParam(value="id",required = false,defaultValue = "0") Long id) {
-        if( id ==0L){
+    public List<City> getCityList(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
+        if (id != 0L) {
             ArrayList<City> cityList = new ArrayList<>();
-            cityList.add(cityService.findCityByID(id));
+            City c = cityService.findCityByID(id);
+            if (c != null) {
+                cityList.add(c);
+            }
             return cityList;
         }
         return new ArrayList<>(cityMap.values());
@@ -68,7 +69,9 @@ public class DemoController {
     @RequestMapping(value = "/cities", method = RequestMethod.POST)
     public CommonResp postCity(@RequestBody City city) {
         cityMap.put(city.getId(), city);
-        return new CommonResp(0, "success");
+        int a = cityService.insert(city);
+        LOG.info("ccccc {} {}",a,a);
+        return new CommonResp(a, "success");
     }
 
 }
