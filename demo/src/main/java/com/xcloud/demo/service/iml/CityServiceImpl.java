@@ -1,38 +1,51 @@
 package com.xcloud.demo.service.iml;
 
+import com.xcloud.demo.config.BookProperties;
 import com.xcloud.demo.orm.CityMapper;
 import com.xcloud.demo.domain.City;
 import com.xcloud.demo.service.CityService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import lombok.extern.slf4j.*;
+
+import javax.annotation.PostConstruct;
 
 @Service
+@Slf4j
 public class CityServiceImpl implements CityService {
-    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+    // private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private CityMapper cityMapper;
+
+    @Autowired
+    private BookProperties bookProperties;
+
+    @PostConstruct
+    void printBook() {
+        log.info("bookProperties {} ", bookProperties.toString());
+        bookProperties.setName("ggggggggggxxx-------------");
+    }
 
     public City findCityByID(Long id) {
         return cityMapper.findByID(id);
     }
 
-    public int insert(City city)  {
+    public int insert(City city) {
         try {
             return cityMapper.insert(city);
         } catch (Exception e) {
             String message = "创建任务失败 " + e.getMessage();
-            LOG.error(message);
+            log.error(message);
             return 22;
         }
     }
-    public List<City> findAll(){
+
+    public List<City> findAll() {
         return cityMapper.findAll();
     }
 

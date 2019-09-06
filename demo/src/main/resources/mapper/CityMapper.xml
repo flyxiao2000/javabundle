@@ -8,10 +8,10 @@
 	</resultMap>
 
 	<select id="findByID" resultMap="BaseResultMap" parameterType="java.lang.Long">
-		select id,age,city_name from city where id = #{id,jdbcType=BIGINT}
+		select * from city where userID = #{id,jdbcType=BIGINT}
 	</select>
 	<select id="findAll" resultMap="BaseResultMap" >
-		select id,age,city_name from city
+		select * from city
 	</select>
 
 
